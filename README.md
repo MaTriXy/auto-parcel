@@ -1,34 +1,74 @@
-# AutoParcel
+# AutoValue: Parcel Extension
 
-An extension for Google's [AutoValue](https://github.com/google/auto) that supports Android's Parcelable interface.
+[![Build Status](https://travis-ci.org/rharter/auto-value-parcel.svg?branch=master)](https://travis-ci.org/rharter/auto-value-parcel)
 
-**Note**: This is a very early version that won't work with the released AutoValue until a [PR](https://github.com/google/auto/pull/237) has been merged.
+An extension for Google's [AutoValue](https://github.com/google/auto) that supports Android's 
+Parcelable interface.
 
 ## Usage
 
-Simply include AutoParcel in your project and make any of your `@AutoValue` annotated classed implement `Parcelable`.
+Simply include the AutoValue: Parcel Extension in your project and make any of your `@AutoValue` 
+annotated classed implement `Parcelable`.
 
 ```java
 @AutoValue public abstract class Foo implements Parcelable {
 
   public abstract String bar();
-  
-  // needed workaround for now. 
-  @Override public int describeContents() {
-    return 0;
-  }
+
 }
 ```
 
 Now build your project and enjoy your Parcelable Foo.
+
+## TypeAdapters
+
+Out of the box AutoValue: Parcel Extension support all of the types supported by the 
+[Parcel](https://developer.android.com/reference/android/os/Parcel.html) class, but sometimes you
+may need to parcel other types, like SparseArray or ArrayMap.  You can do this using a custom TypeAdapter.
+
+TypeAdapter allows you to define custom de/serialization logic for properties by allowing you to
+parcel and unparcel those properties manually.
+
+```java
+public class DateTypeAdapter implements TypeAdapter<Date> {
+  public Date fromParcel(Parcel in) {
+    return new Date(in.readLong());
+  }
+  
+  public void toParcel(Date value, Parcel dest) {
+    dest.writeLong(value.getTime());
+  }
+}
+```
+
+Once you've defined your custom TypeAdapter, using it on an AutoValue class is as simple as adding
+the `ParcelAdapter` annotation to any property you'd like to be serialized with your TypeAdapter.
+
+```java
+@AutoValue public abstract class Foo implements Parcelable {
+  @ParcelAdapter(DateTypeAdapter.class) public abstract Date date();
+}
+```
+
+Since TypeAdapters require a small runtime component, they are optional.  To use TypeAdapters in 
+your project you'll have to add a compile dependency on the `auto-value-parcel-adapter` artifact.
+
+```groovy
+compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1'
+```
 
 ## Download
 
 Add a Gradle dependency:
 
 ```groovy
-compile 'com.ryanharter.auto-parcel:auto-parcel:0.2-SNAPSHOT'
+apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.1'
+
+// Optionally for TypeAdapter support
+compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1'
 ```
+
+(Using the [android-apt](https://bitbucket.org/hvisser/android-apt) plugin)
 
 ## License
 
