@@ -1,7 +1,5 @@
 # AutoValue: Parcel Extension
 
-[![Build Status](https://travis-ci.org/rharter/auto-value-parcel.svg?branch=master)](https://travis-ci.org/rharter/auto-value-parcel)
-
 An extension for Google's [AutoValue](https://github.com/google/auto) that supports Android's 
 Parcelable interface.
 
@@ -54,7 +52,7 @@ Since TypeAdapters require a small runtime component, they are optional.  To use
 your project you'll have to add a compile dependency on the `auto-value-parcel-adapter` artifact.
 
 ```groovy
-compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1'
+compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.9'
 ```
 
 ## Download
@@ -62,13 +60,13 @@ compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1'
 Add a Gradle dependency:
 
 ```groovy
-apt 'com.ryanharter.auto.value:auto-value-parcel:0.2.1'
+annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.9'
 
 // Optionally for TypeAdapter support
-compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.1'
+compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.9'
 ```
 
-(Using the [android-apt](https://bitbucket.org/hvisser/android-apt) plugin)
+([Migrating](https://bitbucket.org/hvisser/android-apt/wiki/Migration) from `apt` to `annotationProcessor`)
 
 ## License
 
